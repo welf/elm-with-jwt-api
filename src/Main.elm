@@ -3,6 +3,7 @@ module Main exposing (..)
 import Html exposing (Html, blockquote, button, div, h2, p, program, text)
 import Html.Attributes exposing (class)
 import Html.Events exposing (onClick)
+import Http
 
 
 -- MODEL
@@ -19,7 +20,7 @@ initialModel =
 
 init : ( Model, Cmd Msg )
 init =
-    ( initialModel, Cmd.none )
+    ( initialModel, fetchRandomQuoteCmd )
 
 
 
@@ -28,6 +29,7 @@ init =
 
 type Msg
     = GetQuote
+    | FetchRandomQuote (Result Http.Error String)
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -35,6 +37,34 @@ update msg model =
     case msg of
         GetQuote ->
             { model | quote = model.quote ++ "A quote! " } ! []
+
+        FetchRandomQuote result ->
+            case result of
+                Err error ->
+                    { model | quote = toString error } ! []
+
+                Ok newQuote ->
+                    { model | quote = newQuote } ! []
+
+
+
+-- COMMANDS
+
+
+fetchRandomQuoteCmd : Cmd Msg
+fetchRandomQuoteCmd =
+    Http.getString randomQuoteUrl
+        |> Http.send FetchRandomQuote
+
+
+randomQuoteUrl : String
+randomQuoteUrl =
+    api ++ "/api/random-quote"
+
+
+api : String
+api =
+    "http://localhost:3001/"
 
 
 

@@ -21,5 +21,5 @@ You can view application at [http://localhost:3000](http://localhost:3000).
 - [x] Build the prototype of the application
   - [x] Create [`/src/Main.elm`](https://github.com/welf/elm-with-jwt-api/blob/master/src/Main.elm) file and describe the basic version of the `model`, `update` and `view` functions
   - [x] Style the prototype with [Bootstrap](http://getbootstrap.com/components/) styles and styles from [`/src/styles.css`](https://github.com/welf/elm-with-jwt-api/blob/master/src/styles.css) file
-  - Add command `Cmd` to fetch the random quote calling API
+  - [x] Add command `Cmd` to call the API to fetch the random quote
   - Refactor the application wrapping fetched data in `WebData` type from [`krisajenkins/RemoteData`](http://package.elm-lang.org/packages/krisajenkins/remotedata/latest) package to [slay a UI antipattern](http://blog.jenkster.com/2016/06/how-elm-slays-a-ui-antipattern.html)
