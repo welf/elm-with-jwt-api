@@ -4,18 +4,19 @@ import Html exposing (Html, blockquote, button, div, h2, p, program, text)
 import Html.Attributes exposing (class)
 import Html.Events exposing (onClick)
 import Http
+import RemoteData exposing (WebData)
 
 
 -- MODEL
 
 
 type alias Model =
-    { quote : String }
+    { quote : WebData String }
 
 
 initialModel : Model
 initialModel =
-    { quote = "A quote pls! " }
+    { quote = RemoteData.Loading }
 
 
 init : ( Model, Cmd Msg )
@@ -29,22 +30,17 @@ init =
 
 type Msg
     = GetQuote
-    | FetchRandomQuote (Result Http.Error String)
+    | FetchRandomQuote (WebData String)
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         GetQuote ->
-            { model | quote = model.quote ++ "A quote! " } ! []
+            model ! [ fetchRandomQuoteCmd ]
 
         FetchRandomQuote result ->
-            case result of
-                Err error ->
-                    { model | quote = toString error } ! []
-
-                Ok newQuote ->
-                    { model | quote = newQuote } ! []
+            { model | quote = result } ! []
 
 
 
@@ -54,7 +50,8 @@ update msg model =
 fetchRandomQuoteCmd : Cmd Msg
 fetchRandomQuoteCmd =
     Http.getString randomQuoteUrl
-        |> Http.send FetchRandomQuote
+        |> RemoteData.sendRequest
+        |> Cmd.map FetchRandomQuote
 
 
 randomQuoteUrl : String
@@ -83,8 +80,26 @@ view model =
                 [ text "Grab a quote" ]
             ]
         , blockquote []
-            [ p [] [ text model.quote ] ]
+            [ p [] [ viewQuote model.quote ]
+            , p [] [ text <| toString model.quote ]
+            ]
         ]
+
+
+viewQuote : WebData String -> Html Msg
+viewQuote result =
+    case result of
+        RemoteData.NotAsked ->
+            text "Quote was not asked"
+
+        RemoteData.Loading ->
+            text "Loading..."
+
+        RemoteData.Failure error ->
+            text "Something gone wrong... :("
+
+        RemoteData.Success newQuote ->
+            text newQuote
 
 
 
