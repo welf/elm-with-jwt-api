@@ -61,7 +61,7 @@ randomQuoteUrl =
 
 api : String
 api =
-    "http://localhost:3001/"
+    "http://localhost:3001"
 
 
 
@@ -81,7 +81,6 @@ view model =
             ]
         , blockquote []
             [ p [] [ viewQuote model.quote ]
-            , p [] [ text <| toString model.quote ]
             ]
         ]
 
