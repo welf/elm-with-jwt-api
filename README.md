@@ -24,3 +24,16 @@ You can view application at [http://localhost:3000](http://localhost:3000).
   - [x] Make sure the [API server](https://github.com/auth0-blog/nodejs-jwt-authentication-sample) is up and running
   - [x] Add command `Cmd` to call the API to fetch the random quote
   - [x] Refactor the application by wrapping model data in `WebData` type from [`krisajenkins/RemoteData`](http://package.elm-lang.org/packages/krisajenkins/remotedata/latest) package to [slay a UI antipattern](http://blog.jenkster.com/2016/06/how-elm-slays-a-ui-antipattern.html)
+- Add authentication of users to call the API
+  - Add user registration
+    - Create registration form
+    - After the user has registered, display a welcome message
+    - Add encoders and decoders to encode/decode JSON objects to Elm and backwards
+    - Add message exchage between the application and authentication API
+    - Display authentication errors to the users and make them user-friendly
+  - Add logging in and logging out
+- Make authorized requests to the API to get protected quotes for authenticated users
+- Persisting Logins with Local Storage
+  - Add a bit of JavaScript to check local storage for previously saved `model` data
+  - Add Elm functions to work with JavaScript local storage code
+- Add Auth0 authorization
